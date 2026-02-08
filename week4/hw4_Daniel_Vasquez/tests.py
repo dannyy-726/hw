@@ -1,4 +1,4 @@
-from hw4_firstname_lastname import  analyze_climate_data, rainfall_prediction, export_weather_predictions # !!!!! importatnt: replace  hw4_firstname_lastname.py with your actual name, your actual .py file
+from weather_analysis import  analyze_climate_data, rainfall_prediction, export_weather_predictions # !!!!! importatnt: replace  hw4_firstname_lastname.py with your actual name, your actual .py file
 
 
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     # Task 2 test
     result = rainfall_prediction(filename)
-    print(f"Task 2 test resuts: {result}") 
+    print(f"Task 2 test resuts: {result}")  
 
     # Task 3 test
     export_weather_predictions(filename, destination_file)
