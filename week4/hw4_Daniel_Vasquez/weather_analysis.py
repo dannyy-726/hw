@@ -2,15 +2,14 @@ import csv
 
 # Task 1 function
 def analyze_climate_data(filename:str)-> (int, int, float, float, float, float):
-    # implement function here
     total_days = 0
     days_with_precipitation = 0
     lowest_temp = None
     highest_temp = None
     total_humidity = 0
-    total_percipitation = 0
+    total_precipitation = 0
     mean_humidity = 0
-    mean_percipitation = 0
+    mean_precipitation = 0
 
     with open(filename, 'r') as f:
         reader = csv.reader(f)
@@ -20,13 +19,17 @@ def analyze_climate_data(filename:str)-> (int, int, float, float, float, float):
 
             min_temp = float(line[0])
             max_temp = float(line[1])
+
+            if max_temp < min_temp:
+                raise ValueError("Maximum temperature cannot be less than the minimum temperature.")
+
             humidity = float(line[2])
-            percipitation = float(line[3])
+            precipitation = float(line[3])
             total_days +=1
             total_humidity += humidity
-            total_percipitation += percipitation
+            total_precipitation += precipitation
 
-            if percipitation > 0:
+            if precipitation > 0:
                 days_with_precipitation +=1
             if lowest_temp is None:
                 lowest_temp = min_temp
@@ -39,9 +42,9 @@ def analyze_climate_data(filename:str)-> (int, int, float, float, float, float):
 
     if total_days > 0:
         mean_humidity = round(total_humidity / total_days, 2)
-        mean_percipitation = round(total_percipitation / total_days, 2)
+        mean_precipitation = round(total_precipitation / total_days, 2)
 
-    return total_days, days_with_precipitation, lowest_temp, highest_temp, mean_humidity, mean_percipitation
+    return total_days, days_with_precipitation, lowest_temp, highest_temp, mean_humidity, mean_precipitation
              
     
 
@@ -60,14 +63,18 @@ def rainfall_prediction(filename:str)-> (int, int):
         
             min_temp = float(line[0])
             max_temp = float(line[1])
+
+            if max_temp < min_temp:
+                raise ValueError("Maximum temperature cannot be less than the minimum temperature.")
+            
             humidity = float(line[2])
-            percipitation = float(line[3])
+            precipitation = float(line[3])
 
             predicted_rainy = (max_temp - min_temp) > 10 and humidity > 50
 
             if predicted_rainy:
                 days_of_rain += 1
-            if (predicted_rainy and percipitation > 0) or (not(predicted_rainy) and percipitation == 0):
+            if (predicted_rainy and precipitation > 0) or (not(predicted_rainy) and precipitation == 0):
                 correct_predictions += 1
     return days_of_rain, correct_predictions
             
@@ -81,7 +88,7 @@ def export_weather_predictions(source_file: str, destination_file: str) -> None:
 
         forecast = None
         writer.writerow(
-            ["Minimum Temperature","Maximum Temperature","Humidity","Percipitation","Forecast"])
+            ["Minimum Temperature","Maximum Temperature","Humidity","Precipitation","Forecast"])
 
         for line in reader:
             if not line or len(line) != 4:
@@ -89,13 +96,17 @@ def export_weather_predictions(source_file: str, destination_file: str) -> None:
             
             min_temp = float(line[0])
             max_temp = float(line[1])
+
+            if max_temp < min_temp:
+                raise ValueError("Maximum temperature cannot be less than the minimum temperature.")
+            
             humidity = float(line[2])
-            percipitation = float(line[3])
+            precipitation = float(line[3])
 
             if (max_temp - min_temp) > 10 and humidity > 50:
-                writer.writerow([min_temp,max_temp,humidity,percipitation,'rainy'])
+                writer.writerow([min_temp,max_temp,humidity,precipitation,'rainy'])
             else:
-                writer.writerow([min_temp,max_temp,humidity,percipitation,'sunny'])
+                writer.writerow([min_temp,max_temp,humidity,precipitation,'sunny'])
 
 
 
