@@ -82,10 +82,6 @@ def write_averages(file_name: str, averages: dict):
             writer.writerow([student_id, name, f"{avg:.2f}",highest])
             student_id += 1
 
-#test outputs       
-if __name__ == "__main__":   
-    print(transform_tuple((234,324,5,53,75)))
-    print(unique_letters("apple","weather"))
     
     
 
